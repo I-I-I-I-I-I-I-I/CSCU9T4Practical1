@@ -4,9 +4,10 @@ package com.stir.cscu9t4practical1;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.util.List;
 import java.util.Spliterators.AbstractDoubleSpliterator;
 import javax.swing.JFormattedTextField;
-
+import javax.swing.JOptionPane;
 import javax.swing.*;
 import java.lang.Number;
 
@@ -14,7 +15,6 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
 
     private JTextField name = new JTextField(30);
     private JTextField day = new JTextField(2);
-    int t  = 2;
     private JTextField month = new JTextField(2);
     private JTextField year = new JTextField(4);
     private JTextField hours = new JTextField(2);
@@ -38,7 +38,7 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
     public int dStore;
     public int mStore;
     public int yStore;
-
+    public List<String> failed = new ArrayList<>();
     private TrainingRecord myAthletes = new TrainingRecord();
 
     private JTextArea outputArea = new JTextArea(5, 50);
@@ -117,7 +117,25 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
        blankDisplay();
     } // actionPerformed
 
+
+    /* Adds the user inputted entries to the system. First line is a method call used to
+       verify the numbers as integers using try/catch. Throws an exception if they ain't.
+    */
     public String addEntry(String what) {
+
+        boolean[] Vercheck = verify();
+
+        //Integer verification                
+                if(Vercheck[0] = true)
+                 {
+                     JOptionPane.showMessageDialog(null , "The field(s) \n" + failed.toString() + " \n must have an integer value." );
+                 }
+                if(Vercheck[1] = true)
+                 {
+                     JOptionPane.showMessageDialog(null , "The field 'name' must have a value." );
+                 }
+
+
         String message = "Record added\n";
         System.out.println("Adding "+what+" entry to the records");
         String n = name.getText();
@@ -216,6 +234,38 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
         
                 return myAthletes.lookupAll(d , m , y);
         
+        }
+
+    /*
+        Right. This verifies every field* in the program with either a try/catch or
+        an if statement, it returns a boolean array, each element of the array represents
+        a pass(false) or a fail(true) in that specific category. A failed return in a catagory
+        will trigger a warning message within the calling method.
+    */    
+
+    public boolean[] verify()
+        {
+            String[] selector = {"day" , "month" , "year" , "hours" , "mins" , "secs"};
+            boolean[] verifCheck = new boolean[2];
+            JTextField[] fieldSelector = {day , month , year , hours , mins , secs};
+            
+        for(int x = 0 ; x <= 5 ; x++)
+            {
+                try {
+                    Integer.parseInt(fieldSelector[x].getText());
+                } catch (Exception e) {
+                    verifCheck[0] = true;
+                    failed.add(selector[x]); //Keeps a count of which variables (day, month , year, etc.) failed the vibecheck
+                }
+
+                if (name.getText() == "")
+                    {
+                        verifCheck[1] = true;
+                    }
+            }
+
+            return verifCheck;
+
         }
 
 } // TrainingRecordGUI
