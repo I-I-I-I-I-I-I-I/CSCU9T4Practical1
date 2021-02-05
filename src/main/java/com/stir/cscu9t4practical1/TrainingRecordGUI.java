@@ -34,7 +34,8 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
     private JButton lookUpByDate = new JButton("Look Up");
     private JButton findAllByDate = new JButton("Find all");
     private JButton showAll = new JButton("Show me All entries on this date");
-    public int setLength = 500;
+    private JRadioButton cycle = new JRadioButton();
+    public int setLength = 500; 
     public int dStore;
     public int mStore;
     public int yStore;
@@ -88,6 +89,8 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
         add(outputArea);
         showAll.setVisible(false);
         outputArea.setEditable(false);
+        cycle.setLocation(100, 300);
+        add(cycle);
         setSize(720, setLength);
         setVisible(true);
         blankDisplay();
