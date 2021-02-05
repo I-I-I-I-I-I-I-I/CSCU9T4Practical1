@@ -77,6 +77,7 @@ public class TrainingRecord  {
                             }
 
                         result[0] = current.getEntry();
+                        
                     }
                     
         }

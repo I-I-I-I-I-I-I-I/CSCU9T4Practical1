@@ -30,12 +30,17 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
     private JLabel labs = new JLabel(" Secs:");
     private JLabel labWarning = new JLabel("More than one record on this date. Showing most recent entry.");
     private JLabel labdist = new JLabel(" Distance (km):");
+    private JLabel labRadioCycle = new JLabel("Cycle");
+    private JLabel labRadioSprint = new JLabel("Sprint");
+    private JLabel labRadioSwim = new JLabel("Swim"); 
     private JButton addR = new JButton("Add");
     private JButton lookUpByDate = new JButton("Look Up");
     private JButton findAllByDate = new JButton("Find all");
     private JButton showAll = new JButton("Show me All entries on this date");
     private JRadioButton cycle = new JRadioButton();
-    public int setLength = 500; 
+    private JRadioButton sprint = new JRadioButton();
+    private JRadioButton swim = new JRadioButton();
+    public int setLength = 250; 
     public int dStore;
     public int mStore;
     public int yStore;
@@ -89,9 +94,7 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
         add(outputArea);
         showAll.setVisible(false);
         outputArea.setEditable(false);
-        cycle.setLocation(100, 300);
-        add(cycle);
-        setSize(720, setLength);
+        setSize(1500, setLength);
         setVisible(true);
         blankDisplay();
 
