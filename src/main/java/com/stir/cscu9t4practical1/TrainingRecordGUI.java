@@ -6,40 +6,60 @@ import java.awt.event.*;
 import java.util.*;
 import java.util.List;
 import java.util.Spliterators.AbstractDoubleSpliterator;
-import javax.swing.JFormattedTextField;
-import javax.swing.JOptionPane;
+
 import javax.swing.*;
 import java.lang.Number;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 public class TrainingRecordGUI extends JFrame implements ActionListener {
 
+    DateFormat format = new SimpleDateFormat("dd/mm/yyyy");
+
     private JTextField name = new JTextField(30);
-    private JTextField day = new JTextField(2);
-    private JTextField month = new JTextField(2);
-    private JTextField year = new JTextField(4);
     private JTextField hours = new JTextField(2);
     private JTextField mins = new JTextField(2);
     private JTextField secs = new JTextField(2);
     private JTextField dist = new JTextField(4);
-    private JLabel labn = new JLabel(" Name:");
-    private JLabel labd = new JLabel(" Day:");
-    private JLabel labm = new JLabel(" Month:");
-    private JLabel laby = new JLabel(" Year:");
-    private JLabel labh = new JLabel(" Hours:");
-    private JLabel labmm = new JLabel(" Mins:");
-    private JLabel labs = new JLabel(" Secs:");
+    private JFormattedTextField date = new JFormattedTextField(format);
+    private JLabel type = new JLabel("Type:");
+    private JLabel labn = new JLabel("Name:");
+    private JLabel labDate = new JLabel("Date (DD/MM/YYYY):");
+    private JLabel labTime = new JLabel("Time:");
+    private JLabel labh = new JLabel(" H:");
+    private JLabel labmm = new JLabel(" M:");
+    private JLabel labs = new JLabel(" S:");
     private JLabel labWarning = new JLabel("More than one record on this date. Showing most recent entry.");
-    private JLabel labdist = new JLabel(" Distance (km):");
-    private JLabel labRadioCycle = new JLabel("Cycle");
-    private JLabel labRadioSprint = new JLabel("Sprint");
-    private JLabel labRadioSwim = new JLabel("Swim"); 
+    private JLabel labdist = new JLabel("Distance:");
+
+    //RUN SPECIFIC LABEL DECLARATIONS
+    private JLabel labRunAmount = new JLabel("No. of Runs:");
+    private JTextField runAmount = new JTextField(5);
+    private JLabel labRests = new JLabel("Recovery time (m):");
+    private JTextField rests = new JTextField(5);
+
+    //CYCLE SPECIFIC LABEL DECLARATIONS
+    private JLabel labTerrain = new JLabel("Terrain: ");
+    private JTextField terrain = new JTextField();
+    private JLabel labTempo = new JLabel("Tempo: ");
+    private JTextField tempo = new JTextField();
+
+    //SWIM SPECIFIC LABEL DECLARATIONS
+    private JLabel labIndoorOutdoor = new JLabel("Location (Indoor/outdoor etc):");
+    private JTextField IndoorOutdoor = new JTextField();
+
     private JButton addR = new JButton("Add");
     private JButton lookUpByDate = new JButton("Look Up");
     private JButton findAllByDate = new JButton("Find all");
+    // private JButton RunEntry = new JButton();
+    // private JButton SwimEntry = new JButton();
+    // private JButton CycleEntry = new JButton();
     private JButton showAll = new JButton("Show me All entries on this date");
-    private JRadioButton cycle = new JRadioButton();
-    private JRadioButton sprint = new JRadioButton();
-    private JRadioButton swim = new JRadioButton();
+    private JComboBox chooseEntry = new JComboBox();
+    private JComboBox distanceMod = new JComboBox();
+    private JTextArea outputArea = new JTextArea(5, 50);
+   //end of GUI declerations
+   
     public int setLength = 250; 
     public int dStore;
     public int mStore;
@@ -47,61 +67,128 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
     public List<String> failed = new ArrayList<>();
     private TrainingRecord myAthletes = new TrainingRecord();
 
-    private JTextArea outputArea = new JTextArea(5, 50);
-
     public static void main(String[] args) {
         TrainingRecordGUI applic = new TrainingRecordGUI();
     } // main
 
     // set up the GUI 
+    
     public TrainingRecordGUI() {
-        super("Training Record");
-        setLayout(new FlowLayout());
-        add(labn);
-        add(name);
-        name.setEditable(true);
-        add(labd);
-        add(day);
-        day.setEditable(true);
-        add(labm);
-        add(month);
-        month.setEditable(true);
-        add(laby);
-        add(year);
-        year.setEditable(true);
-        add(labh);
-        add(hours);
-        hours.setEditable(true);
-        add(labmm);
-        add(mins);
-        mins.setEditable(true);
-        add(labs);
-        add(secs);
-        secs.setEditable(true);
-        add(labdist);
-        add(dist);
-        dist.setEditable(true);
-        add(addR);
-        addR.addActionListener(this);
-        add(lookUpByDate);
-        lookUpByDate.addActionListener(this);
-        add(findAllByDate);
-        findAllByDate.addActionListener(this);
-        add(showAll);
-        showAll.addActionListener(this);
-        add(labWarning);
-        labWarning.setVisible(false);
-        add(outputArea);
-        showAll.setVisible(false);
-        outputArea.setEditable(false);
-        setSize(1500, setLength);
+
+        JFrame frame = new JFrame("TRAININGGUI");
+        setLayout(null);
+        setSize(800 , 300);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
-        blankDisplay();
+        outputArea.setBounds(300 , 10 , 450 , 235);
+        add(outputArea);
+
+        //Entry choice drawing
+        type.setBounds(5 , 5 , 100 , 20);
+        add(type);
+        chooseEntry.setBounds(50 , 5 , 100 , 20 );
+        chooseEntry.addItem("Run");
+        chooseEntry.addItem("Swim");
+        chooseEntry.addItem("Cycle");
+        chooseEntry.addActionListener(this);
+        add(chooseEntry);
+
+        //Name drawing
+        name.setBounds(50 , 40 , 200 , 20);
+        add(name);
+        labn.setBounds(5 , 40 , 100 , 20);
+        add(labn);
+
+        //Date drawing
+        date.setBounds(120 , 77 , 100 , 20);
+        add(date);
+        labDate.setBounds(5 , 75 , 110 , 20);
+        add(labDate);
+
+        //time drawing
+        labTime.setBounds( 5 , 105 , 110 , 20);
+        add(labTime);
+        labh.setBounds(40 , 105 , 110 , 20);
+        add(labh);
+        hours.setBounds(60, 105 , 30 , 20);
+        add(hours);
+        labmm.setBounds(100 , 105 , 30 , 20);
+        add(labmm);
+        mins.setBounds(120 , 105 , 30 , 20);
+        add(mins);
+        labs.setBounds(160 , 105 , 30 , 20);
+        add(labs);
+        secs.setBounds(180 , 105 , 30 ,20);
+        add(secs);
+
+        //distance drawing
+        labdist.setBounds(5 , 140 , 100 , 20);
+        add(labdist);
+        dist.setBounds(60 , 140 , 35 , 20);
+        add(dist);
+        distanceMod.setBounds(100 , 140 , 50 , 19);
+        distanceMod.addItem("km");
+        distanceMod.addItem("m");
+        add(distanceMod);
+
+        //RUN SPECIFIC DRAWING
+        labRunAmount.setBounds(5 , 175 , 75 , 20);
+        add(labRunAmount);
+        runAmount.setBounds(80 , 175 , 50 , 20);
+        add(runAmount);
+
+        labRests.setBounds(5 , 210 , 110 , 20);
+        add(labRests);
+        rests.setBounds(120 , 210 , 110 , 20);
+        add(rests);
+        //End of run specific drawing
+
+        //CYCLE SPECIFIC DRAWING
+        labTerrain.setBounds(5 , 175 , 110 , 20);
+        add(labTerrain);
+        terrain.setBounds(55 , 175 , 110 , 20);
+        add(terrain);
+
+        labTerrain.setVisible(false);
+        terrain.setVisible(false);
+        //End of cycle specific drawing
+
+        //SWIM SPECIFIC DRAWING
+        labIndoorOutdoor.setBounds(5 , 175 , 175 , 20);
+        add(labIndoorOutdoor);
+        IndoorOutdoor.setBounds(180 , 177 , 110 , 20);
+        add(IndoorOutdoor);
+
+        labIndoorOutdoor.setVisible(false);
+        IndoorOutdoor.setVisible(false);
+        //End of swim specific drawing
+
+        //Buttons
+         addR.setBounds(5 , 235 , 70 , 20);
+         add(addR);
+         addR.addActionListener(this);
+
+         lookUpByDate.setBounds(210 , 235 , 80 , 20);
+         add(lookUpByDate);
+         lookUpByDate.addActionListener(this);
+
+         add(findAllByDate);
+         findAllByDate.addActionListener(this);
+         add(showAll);
+         showAll.addActionListener(this);
+
+        // add(labWarning);
+        // labWarning.setVisible(false);
+        // add(outputArea);
+        // showAll.setVisible(false);
+         outputArea.setEditable(false);
 
         // To save typing in new entries while testing, uncomment
         // the following lines (or add your own test cases)
         
     } // constructor
+
+    
 
     // listen for and respond to GUI events 
     public void actionPerformed(ActionEvent event) {
@@ -119,8 +206,38 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
 
             message = showAll();
         } 
+
+        //this one is inneficcient but it works so who cares
+        if (event.getSource() == chooseEntry) {
+
+            String choice = chooseEntry.getSelectedItem().toString();
+
+            switch (choice) {
+    
+                case "Run":
+                    changing();
+                    labRunAmount.setVisible(true);
+                    runAmount.setVisible(true);
+                    labRests.setVisible(true);
+                    rests.setVisible(true);
+
+                break;
+                case "Swim":
+                    changing();
+                    labIndoorOutdoor.setVisible(true);
+                    IndoorOutdoor.setVisible(true);
+
+                break;
+                case "Cycle":
+                    changing();
+                    labTerrain.setVisible(true);
+                    terrain.setVisible(true);
+
+                break;
+            }
+        }
         outputArea.setText(message);
-       blankDisplay();
+       //blankDisplay();
     } // actionPerformed
 
 
@@ -131,37 +248,78 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
 
         boolean[] Vercheck = verify();
 
-        //Integer verification                
-                if(Vercheck[0] = true)
+        //Integer verification      
+        
+            if(Vercheck[1] == true || Vercheck[0] == true)
+                {
+        
+                if(Vercheck[0] == true)
                  {
                      JOptionPane.showMessageDialog(null , "The field(s) \n" + failed.toString() + " \n must have an integer value." );
+                     failed.clear();
+
                  }
-                if(Vercheck[1] = true)
+                if(Vercheck[1] == true)
                  {
                      JOptionPane.showMessageDialog(null , "The field 'name' must have a value." );
                  }
-
+                 return null;
+                }
 
         String message = "Record added\n";
         System.out.println("Adding "+what+" entry to the records");
         String n = name.getText();
-        int m = Integer.parseInt(month.getText());
-        int d = Integer.parseInt(day.getText());
-        int y = Integer.parseInt(year.getText());
+        String fullDate = date.getText();
+
+        String distnce = dist.getText() + distanceMod.getSelectedItem();
+        String[] splitDate = fullDate.split("/");
+        int d = Integer.parseInt(splitDate[0]);
+        int m = Integer.parseInt(splitDate[1]);
+        int y = Integer.parseInt(splitDate[2]);
         float km = java.lang.Float.parseFloat(dist.getText());
         int h = Integer.parseInt(hours.getText());
         int mm = Integer.parseInt(mins.getText());
         int s = Integer.parseInt(secs.getText());
-        Entry e = new Entry(n, d, m, y, h, mm, s, km);
-        myAthletes.addEntry(e);
+        //END OF UNIVERSAL VARIABLES FOR THIS METHOD
+
+        //cycle variables
+        String terr = terrain.getText();
+        String temp = tempo.getText();
+
+        //run variables
+        int runamnt = Integer.parseInt(runAmount.getText());
+        int resting = Integer.parseInt(rests.getText());
+
+        //swim variables
+        String inOut = IndoorOutdoor.getText();
+
+
+                String switcher = chooseEntry.getSelectedItem().toString();
+                
+                switch(switcher) {
+
+                    case "Cycle":
+                        myAthletes.addEntry(new CycleEntry(n , d , m , y , h , mm , s , distnce , terr , temp));
+                    break;
+
+                    case "Run":
+                        myAthletes.addEntry(new sprintEntry(n , d , m , y , h , mm , s , distnce , runamnt , resting));
+                    break;
+
+                    case "Swim":
+                        myAthletes.addEntry(new SwimEntry(n , d , m , y , h , mm , s , distnce , inOut));
+
+                }
 
         return message;
     }
     
     public String lookupEntry() {
-        int m = Integer.parseInt(month.getText());
-        int d = Integer.parseInt(day.getText());
-        int y = Integer.parseInt(year.getText());
+        String fullDate = date.getText();
+        String[] splitDate = fullDate.split("/");
+        int d = Integer.parseInt(splitDate[0]);
+        int m = Integer.parseInt(splitDate[1]);
+        int y = Integer.parseInt(splitDate[2]);
         outputArea.setText("looking up record ...");
 
         String returned[] = myAthletes.lookupEntry(d, m, y);
@@ -182,10 +340,12 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
       boolean atLeastOne checks if there is at least one entry.
     */
     public String lookupAll() {
-
-        int m = Integer.parseInt(month.getText());
-        int d = Integer.parseInt(day.getText());
-        int y = Integer.parseInt(year.getText());
+        
+        String fullDate = date.getText();
+        String[] splitDate = fullDate.split("/");
+        int d = Integer.parseInt(splitDate[0]);
+        int m = Integer.parseInt(splitDate[1]);
+        int y = Integer.parseInt(splitDate[2]);
         outputArea.setText("looking up record ...");
 
         String returner = myAthletes.lookupAll(d , m , y);
@@ -209,9 +369,7 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
 
     public void blankDisplay() {
         name.setText("");
-        day.setText("");
-        month.setText("");
-        year.setText("");
+        date.setText("");
         hours.setText("");
         mins.setText("");
         secs.setText("");
@@ -219,16 +377,16 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
 
     }// blankDisplay
     // Fills the input fields on the display for testing purposes only
-    public void fillDisplay(Entry ent) {
-        name.setText(ent.getName());
-        day.setText(String.valueOf(ent.getDay()));
-        month.setText(String.valueOf(ent.getMonth()));
-        year.setText(String.valueOf(ent.getYear()));
-        hours.setText(String.valueOf(ent.getHour()));
-        mins.setText(String.valueOf(ent.getMin()));
-        secs.setText(String.valueOf(ent.getSec()));
-        dist.setText(String.valueOf(ent.getDistance()));
-    }
+    // public void fillDisplay(Entry ent) {
+    //     name.setText(ent.getName());
+    //     day.setText(String.valueOf(ent.getDay()));
+    //     month.setText(String.valueOf(ent.getMonth()));
+    //     year.setText(String.valueOf(ent.getYear()));
+    //     hours.setText(String.valueOf(ent.getHour()));
+    //     mins.setText(String.valueOf(ent.getMin()));
+    //     secs.setText(String.valueOf(ent.getSec()));
+    //     dist.setText(String.valueOf(ent.getDistance()));
+    // }
 
     //Nothing to see here...
     public String showAll()
@@ -247,15 +405,18 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
         an if statement, it returns a boolean array, each element of the array represents
         a pass(false) or a fail(true) in that specific category. A failed return in a catagory
         will trigger a warning message within the calling method.
+
+        **!! This code is garbage and does not handle expansion/tinkering well !!**
     */    
 
     public boolean[] verify()
         {
-            String[] selector = {"day" , "month" , "year" , "hours" , "mins" , "secs"};
+            String[] selector = {"hours" , "mins" , "secs" , "date"};
             boolean[] verifCheck = new boolean[2];
-            JTextField[] fieldSelector = {day , month , year , hours , mins , secs};
+            JTextField[] fieldSelector = {hours , mins , secs};
+            String nameT = "";
             
-        for(int x = 0 ; x <= 5 ; x++)
+        for(int x = 0 ; x <= 2 ; x++)
             {
                 try {
                     Integer.parseInt(fieldSelector[x].getText());
@@ -264,13 +425,36 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
                     failed.add(selector[x]); //Keeps a count of which variables (day, month , year, etc.) failed the vibecheck
                 }
 
-                if (name.getText() == "")
+            }
+
+            if (name.getText() == nameT)
                     {
                         verifCheck[1] = true;
                     }
-            }
+
+                if (date.getText() == "")
+                    {
+                        verifCheck[0] = true;
+                        failed.add(selector[4]);
+                    }
 
             return verifCheck;
+
+        }
+
+        private void changing(){
+
+            JLabel[] labChangers = {labRunAmount ,  labRests ,  labTerrain ,  labIndoorOutdoor};
+            JTextField[] textChangers = {runAmount , rests , terrain , IndoorOutdoor};
+
+            for(int x = 0 ; x < labChangers.length ; x++)
+                {
+
+                   labChangers[x].setVisible(false);
+                   textChangers[x].setVisible(false);
+
+
+                }
 
         }
 

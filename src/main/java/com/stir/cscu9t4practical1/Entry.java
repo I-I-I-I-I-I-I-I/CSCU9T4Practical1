@@ -3,16 +3,12 @@ package com.stir.cscu9t4practical1;
 
 import java.util.Calendar;
 public class Entry {
-  private String name;
-  private Calendar dateAndTime;
-  private float distance;
+  protected String name;
+  protected Calendar dateAndTime;
+  protected String distance;
   
-  public Entry (String n, int d, int m, int y, int h, int min, int s, float dist) {
-    name = n;
-    Calendar inst = Calendar.getInstance();
-    inst.set(y,m-1,d,h,min,s);
-    dateAndTime = inst;
-    distance = dist;
+  public Entry (String n, int d, int m, int y, int h, int min, int s, String dist) {
+
   } //constructor
 
   public Entry() {
