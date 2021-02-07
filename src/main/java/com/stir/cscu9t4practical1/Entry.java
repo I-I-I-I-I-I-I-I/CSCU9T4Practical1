@@ -3,48 +3,58 @@ package com.stir.cscu9t4practical1;
 
 import java.util.Calendar;
 public class Entry {
-  protected String name;
-  protected Calendar dateAndTime;
-  protected String distance;
+  private String name;
+  private Calendar dateAndTime;
+  private String distance;
+  private int date;
+  private int month;
+  private int year;
+  private int hour;
+  private int minute;
+  private int second;
   
   public Entry (String n, int d, int m, int y, int h, int min, int s, String dist) {
 
+    name = n;
+    date = d;
+    month = m;
+    year = y;
+    hour = h;
+    minute = m;
+    second = s;
+    distance = dist;
+
   } //constructor
-
-  public Entry() {
-
-  }
   
   public String getName () {
     return name;
   } //getName
   
   public int getDay () {
-    return dateAndTime.get(Calendar.DATE);
+    return date;
   } //getDay
   
   public int getMonth () {
-    int month =  dateAndTime.get(Calendar.MONTH) + 1;
     return month;
   } //getMonth
   
   public int getYear () {
-    return dateAndTime.get(Calendar.YEAR);
+    return year;
   } //getYear
 
   public int getHour () {
-    return dateAndTime.get(Calendar.HOUR);
+    return hour;
   } //getHour
 
   public int getMin () {
-    return dateAndTime.get(Calendar.MINUTE);
+    return minute;
   } //getMin
 
   public int getSec () {
-    return dateAndTime.get(Calendar.SECOND);
+    return second;
   } //getSec
 
-  public float getDistance () {
+  public String getDistance () {
     return distance;
   } //getYear
 

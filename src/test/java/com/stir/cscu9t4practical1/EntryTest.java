@@ -115,7 +115,7 @@ public class EntryTest {
     @Test
     public void testGetSec() {
         System.out.println("getSec");
-        Entry instance = new Entry("Alice", 1, 2, 2003, 0, 16, 7, 3);
+        Entry instance = new Entry("Alice", 1, 2, 2003, 0, 16, 7, "3km");
         int expResult = 7;
         int result = instance.getSec();
         assertEquals(expResult, result);
@@ -127,10 +127,10 @@ public class EntryTest {
     @Test
     public void testGetDistance() {
         System.out.println("getDistance");
-        Entry instance = new Entry("Alice", 1, 2, 2003, 0, 16, 7, 3);
-        float expResult = 3.0F;
-        float result = instance.getDistance();
-        assertEquals(expResult, result, 0.0);
+        Entry instance = new Entry("Alice", 1, 2, 2003, 0, 16, 7, "30m");
+        String expResult = "30m";
+        String result = instance.getDistance();
+        assertEquals(expResult, result, "Distance correct");
     }
 
     /**
@@ -139,7 +139,7 @@ public class EntryTest {
     @Test
     public void testGetEntry() {
         System.out.println("getEntry");
-        Entry instance = new Entry("Alice", 1, 2, 2003, 0, 16, 7, 3);
+        Entry instance = new Entry("Alice", 1, 2, 2003, 0, 16, 7, "3km");
         String expResult = "Alice ran 3.0 km in 0:16:7 on 1/2/2003\n";
         String result = instance.getEntry();
         assertEquals(expResult, result);

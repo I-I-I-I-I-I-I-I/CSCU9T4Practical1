@@ -51,9 +51,6 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
     private JButton addR = new JButton("Add");
     private JButton lookUpByDate = new JButton("Look Up");
     private JButton findAllByDate = new JButton("Find all");
-    // private JButton RunEntry = new JButton();
-    // private JButton SwimEntry = new JButton();
-    // private JButton CycleEntry = new JButton();
     private JButton showAll = new JButton("Show me All entries on this date");
     private JComboBox chooseEntry = new JComboBox();
     private JComboBox distanceMod = new JComboBox();
@@ -77,10 +74,10 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
 
         JFrame frame = new JFrame("TRAININGGUI");
         setLayout(null);
-        setSize(800 , 300);
+        setSize(900 , 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
-        outputArea.setBounds(300 , 10 , 450 , 235);
+        outputArea.setBounds(300 , 10 , 550 , 215);
         add(outputArea);
 
         //Entry choice drawing
@@ -149,8 +146,15 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
         terrain.setBounds(55 , 175 , 110 , 20);
         add(terrain);
 
+        labTempo.setBounds(5 , 205 , 110 , 20);
+        add(labTempo);
+        tempo.setBounds(50 , 205 , 110 , 20);
+        add(tempo);
+
         labTerrain.setVisible(false);
         terrain.setVisible(false);
+        labTempo.setVisible(false);
+        tempo.setVisible(false);
         //End of cycle specific drawing
 
         //SWIM SPECIFIC DRAWING
@@ -168,10 +172,11 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
          add(addR);
          addR.addActionListener(this);
 
-         lookUpByDate.setBounds(210 , 235 , 80 , 20);
+         lookUpByDate.setBounds(700 , 233 , 80 , 20);
          add(lookUpByDate);
          lookUpByDate.addActionListener(this);
 
+         findAllByDate.setBounds(785 , 233 , 80 , 20);
          add(findAllByDate);
          findAllByDate.addActionListener(this);
          add(showAll);
@@ -232,6 +237,8 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
                     changing();
                     labTerrain.setVisible(true);
                     terrain.setVisible(true);
+                    labTempo.setVisible(true);
+                    tempo.setVisible(true);
 
                 break;
             }
@@ -283,15 +290,15 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
         //END OF UNIVERSAL VARIABLES FOR THIS METHOD
 
         //cycle variables
-        String terr = terrain.getText();
-        String temp = tempo.getText();
+         String terr;
+         String temp;
 
         //run variables
-        int runamnt = Integer.parseInt(runAmount.getText());
-        int resting = Integer.parseInt(rests.getText());
+        int runamnt;
+        int resting;
 
         //swim variables
-        String inOut = IndoorOutdoor.getText();
+        String inOut;
 
 
                 String switcher = chooseEntry.getSelectedItem().toString();
@@ -299,21 +306,28 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
                 switch(switcher) {
 
                     case "Cycle":
-                        myAthletes.addEntry(new CycleEntry(n , d , m , y , h , mm , s , distnce , terr , temp));
+                        terr = terrain.getText();
+                        temp = tempo.getText();
+                        CycleEntry cycent = new CycleEntry(n , d , m , y , h , mm , s , distnce , terr , temp);
+                        myAthletes.addEntry(cycent);
                     break;
 
                     case "Run":
-                        myAthletes.addEntry(new sprintEntry(n , d , m , y , h , mm , s , distnce , runamnt , resting));
+                        runamnt = Integer.parseInt(runAmount.getText());
+                        resting = Integer.parseInt(rests.getText());
+                       myAthletes.addEntry(new sprintEntry(n , d , m , y , h , mm , s , distnce , runamnt , resting));
                     break;
 
                     case "Swim":
-                        myAthletes.addEntry(new SwimEntry(n , d , m , y , h , mm , s , distnce , inOut));
+                        inOut = IndoorOutdoor.getText();
+                       myAthletes.addEntry(new SwimEntry(n , d , m , y , h , mm , s , distnce , inOut));
 
                 }
 
         return message;
     }
     
+
     public String lookupEntry() {
         String fullDate = date.getText();
         String[] splitDate = fullDate.split("/");
@@ -341,15 +355,23 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
     */
     public String lookupAll() {
         
-        String fullDate = date.getText();
-        String[] splitDate = fullDate.split("/");
-        int d = Integer.parseInt(splitDate[0]);
-        int m = Integer.parseInt(splitDate[1]);
-        int y = Integer.parseInt(splitDate[2]);
-        outputArea.setText("looking up record ...");
+        try {
 
-        String returner = myAthletes.lookupAll(d , m , y);
-        return returner;
+                String fullDate = date.getText();
+            String[] splitDate = fullDate.split("/");
+            int d = Integer.parseInt(splitDate[0]);
+            int m = Integer.parseInt(splitDate[1]);
+            int y = Integer.parseInt(splitDate[2]);
+            outputArea.setText("looking up record ...");
+
+            String returner = myAthletes.lookupAll(d , m , y);
+            return returner;
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null , "please fill in all appropriate date forms");
+            return null;
+        }
+        
 
     }
 
@@ -375,18 +397,7 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
         secs.setText("");
         dist.setText("");
 
-    }// blankDisplay
-    // Fills the input fields on the display for testing purposes only
-    // public void fillDisplay(Entry ent) {
-    //     name.setText(ent.getName());
-    //     day.setText(String.valueOf(ent.getDay()));
-    //     month.setText(String.valueOf(ent.getMonth()));
-    //     year.setText(String.valueOf(ent.getYear()));
-    //     hours.setText(String.valueOf(ent.getHour()));
-    //     mins.setText(String.valueOf(ent.getMin()));
-    //     secs.setText(String.valueOf(ent.getSec()));
-    //     dist.setText(String.valueOf(ent.getDistance()));
-    // }
+    }
 
     //Nothing to see here...
     public String showAll()
@@ -442,10 +453,11 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
 
         }
 
+        //Handles the visibility of objects during window switching
         private void changing(){
 
-            JLabel[] labChangers = {labRunAmount ,  labRests ,  labTerrain ,  labIndoorOutdoor};
-            JTextField[] textChangers = {runAmount , rests , terrain , IndoorOutdoor};
+            JLabel[] labChangers = {labRunAmount ,  labRests ,  labTerrain ,  labIndoorOutdoor , labTempo};
+            JTextField[] textChangers = {runAmount , rests , terrain , IndoorOutdoor , tempo};
 
             for(int x = 0 ; x < labChangers.length ; x++)
                 {
