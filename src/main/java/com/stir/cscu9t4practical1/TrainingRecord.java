@@ -16,7 +16,28 @@ public class TrainingRecord {
     
     // add a record to the list
    public void addEntry(Entry e){
-       tr.add(e);    
+    if(tr.size() >= 1)
+        {
+        for(int x = 0 ; x < tr.size() ; x++)
+            {
+                Entry compare = tr.get(x);
+                if(compare.getName().equalsIgnoreCase(e.getName()) && compare.getDay() == e.getDay() && compare.getMonth() == e.getMonth() && compare.getYear() == e.getYear())
+                    {
+                        TrainingRecordGUI.duplicateWarn();
+                    }
+                else 
+                    {
+                        tr.add(e);
+                     }
+
+            }
+        }
+    else{
+        tr.add(e);
+        TrainingRecordGUI.lookUpByDate.setEnabled(true);
+        TrainingRecordGUI.findAllByDate.setEnabled(true);
+        TrainingRecordGUI.removeEntry.setEnabled(true);
+    }
    } // addClass
 
    public String lookupAll (int d , int m , int y)
@@ -83,6 +104,22 @@ public class TrainingRecord {
         }
        return result;
    } // lookupEntry
+
+   public void removeEntry(String name , int d , int m , int y){
+
+        ListIterator<Entry> iter = tr.listIterator();
+        int counter = 0;
+        while(iter.hasNext()){
+            Entry current = iter.next();
+
+                if (current.getDay()==d && current.getMonth()==m && current.getYear()==y && current.getName() == name) 
+                    {
+                        tr.remove(counter);
+                    }
+
+        }
+        counter++;
+   }
    
    // Count the number of entries
    public int getNumberOfEntries(){
