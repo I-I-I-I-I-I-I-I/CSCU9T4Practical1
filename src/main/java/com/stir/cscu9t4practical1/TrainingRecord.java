@@ -52,9 +52,6 @@ public class TrainingRecord {
         while(iter.hasNext())
             {          
                 Entry currentValue = iter.next();
-                int monthCheck = currentValue.getMonth();
-                int dayCheck = currentValue.getDay();
-                int yearCheck = currentValue.getYear();
                 
              if (currentValue.getDay()==d && currentValue.getMonth()==m && currentValue.getYear() == y)
                 

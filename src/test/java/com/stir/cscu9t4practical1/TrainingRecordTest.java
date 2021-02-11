@@ -45,7 +45,7 @@ public class TrainingRecordTest {
     @Test
     public void testAddEntry() {
         System.out.println("addEntry");
-        Entry a = new Entry("Alice", 1, 2, 2003, 0, 16, 7, 3);
+        Entry a = new Entry("Alice", 1, 2, 2003, 0, 16, 7, "3m");
         TrainingRecord instance = new TrainingRecord();
         instance.addEntry(a);
         assertEquals(instance.getNumberOfEntries(),1);
@@ -58,8 +58,8 @@ public class TrainingRecordTest {
     @Test
     public void testAddEntryUnique() {
         System.out.println("addEntry -- fail");
-        Entry a = new Entry("Alice", 1, 2, 2003, 0, 16, 7, 3);
-        Entry b = new Entry("Alice", 1, 2, 2003, 0, 16, 7, 3);
+        Entry a = new Entry("Alice", 1, 2, 2003, 0, 16, 7, "3km");
+        Entry b = new Entry("Alice", 1, 2, 2003, 0, 16, 7, "3km");
         TrainingRecord instance = new TrainingRecord();
         instance.addEntry(a);
         instance.addEntry(b);
@@ -77,10 +77,10 @@ public class TrainingRecordTest {
         System.out.println("lookupEntry");
         TrainingRecord instance = new TrainingRecord();
         String expResult = "No entries found";
-        Entry a = new Entry("Alice", 1, 2, 2003, 0, 16, 7, 3);
-        Entry b = new Entry("Bob", 1, 2, 2003, 0, 14, 15, 3);
-        Entry c1 = new Entry("Claire", 7, 3, 2010, 0, 26, 20, 7);
-        Entry c2 = new Entry("Claire", 11, 3, 2010, 0, 24, 55, 7);
+        Entry a = new Entry("Alice", 1, 2, 2003, 0, 16, 7, "3km");
+        Entry b = new Entry("Bob", 1, 2, 2003, 0, 14, 15, "3km");
+        Entry c1 = new Entry("Claire", 7, 3, 2010, 0, 26, 20, "7km");
+        Entry c2 = new Entry("Claire", 11, 3, 2010, 0, 24, 55, "7km");
         instance.addEntry(a);
         instance.addEntry(b);
         instance.addEntry(c1);
@@ -88,9 +88,9 @@ public class TrainingRecordTest {
         int d = 7;
         int m = 3;
         int y = 2010;
-        String result = instance.lookupEntry(d, m, y);
+        String result = instance.lookupEntry(d, m, y)[0];
         assertNotEquals(expResult, result, "expecting to find the entry");
-        result = instance.lookupEntry(1, 2, 1999);
+        result = instance.lookupEntry(1, 2, 1999)[0];
         assertEquals(expResult, result, "expecting to not find the entry");
     }
     
@@ -101,10 +101,10 @@ public class TrainingRecordTest {
     public void testGetNumberOfEntries() {
         System.out.println("GetNumberOfEntries");
         TrainingRecord instance = new TrainingRecord();
-        Entry a = new Entry("Alice", 1, 2, 2003, 0, 16, 7, 3);
-        Entry b = new Entry("Bob", 1, 2, 2003, 0, 14, 15, 3);
-        Entry c1 = new Entry("Claire", 7, 3, 2010, 0, 26, 20, 7);
-        Entry c2 = new Entry("Claire", 11, 3, 2010, 0, 24, 55, 7);
+        Entry a = new Entry("Alice", 1, 2, 2003, 0, 16, 7, "3km");
+        Entry b = new Entry("Bob", 1, 2, 2003, 0, 14, 15, "3km");
+        Entry c1 = new Entry("Claire", 7, 3, 2010, 0, 26, 20, "7km");
+        Entry c2 = new Entry("Claire", 11, 3, 2010, 0, 24, 55, "7km");
         assertEquals(instance.getNumberOfEntries(),0);
         instance.addEntry(a);
         assertEquals(instance.getNumberOfEntries(),1);
@@ -128,8 +128,8 @@ public class TrainingRecordTest {
         String expectResults = "Alice ran 3.0 km in 0:16:7 on 1/2/2003\n" + 
                                 "Bob ran 3.0 km in 0:14:15 on 1/2/2003\n";
         TrainingRecord instance = new TrainingRecord();
-        Entry a = new Entry("Alice", 1, 2, 2003, 0, 16, 7, 3);
-        Entry b = new Entry("Bob", 1, 2, 2003, 0, 14, 15, 3);
+        Entry a = new Entry("Alice", 1, 2, 2003, 0, 16, 7, "3km");
+        Entry b = new Entry("Bob", 1, 2, 2003, 0, 14, 15, "3km");
         instance.addEntry(a);
         instance.addEntry(b);
         fail("This method cannot be tested as it does not exist yet");

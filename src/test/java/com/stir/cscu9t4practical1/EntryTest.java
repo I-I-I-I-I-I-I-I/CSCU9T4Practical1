@@ -43,7 +43,7 @@ public class EntryTest {
     @Test
     public void testGetName() {
         System.out.println("getName");
-        Entry instance = new Entry("Alice", 1, 2, 2003, 0, 16, 7, 3);
+        Entry instance = new Entry("Alice", 1, 2, 2003, 0, 16, 7, "3m");
         String expResult = "Alice";
         String result = instance.getName();
         assertEquals(expResult, result);
@@ -55,7 +55,7 @@ public class EntryTest {
     @Test
     public void testGetDay() {
         System.out.println("getDay");
-        Entry instance = new Entry("Alice", 1, 2, 2003, 0, 16, 7, 3);
+        Entry instance = new Entry("Alice", 1, 2, 2003, 0, 16, 7, "3m");
         int expResult = 1;
         int result = instance.getDay();
         assertEquals(expResult, result);
@@ -67,7 +67,7 @@ public class EntryTest {
     @Test
     public void testGetMonth() {
         System.out.println("getMonth");
-        Entry instance = new Entry("Alice", 1, 2, 2003, 0, 16, 7, 3);
+        Entry instance = new Entry("Alice", 1, 2, 2003, 0, 16, 7, "3m");
         int expResult = 2;
         int result = instance.getMonth();
         assertEquals(expResult, result);
@@ -79,7 +79,7 @@ public class EntryTest {
     @Test
     public void testGetYear() {
         System.out.println("getYear");
-        Entry instance = new Entry("Alice", 1, 2, 2003, 0, 16, 7, 3);
+        Entry instance = new Entry("Alice", 1, 2, 2003, 0, 16, 7, "3m");
         int expResult = 2003;
         int result = instance.getYear();
         assertEquals(expResult, result);
@@ -91,7 +91,7 @@ public class EntryTest {
     @Test
     public void testGetHour() {
         System.out.println("getHour");
-        Entry instance = new Entry("Alice", 1, 2, 2003, 0, 16, 7, 3);
+        Entry instance = new Entry("Alice", 1, 2, 2003, 0, 16, 7, "3m");
         int expResult = 0;
         int result = instance.getHour();
         assertEquals(expResult, result);
@@ -103,7 +103,7 @@ public class EntryTest {
     @Test
     public void testGetMin() {
         System.out.println("getMin");
-        Entry instance = new Entry("Alice", 1, 2, 2003, 0, 16, 7, 3);
+        Entry instance = new Entry("Alice", 1, 2, 2003, 0, 16, 7, "3m");
         int expResult = 16;
         int result = instance.getMin();
         assertEquals(expResult, result);

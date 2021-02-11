@@ -14,6 +14,8 @@ import java.text.SimpleDateFormat;
 
 public class TrainingRecordGUI extends JFrame implements ActionListener {
 
+    public JFrame frame = new JFrame("TRAININGGUI");
+
     DateFormat format = new SimpleDateFormat("dd/mm/yyyy");
 
     private JTextField name = new JTextField(30);
@@ -37,21 +39,25 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
     private JTextField runAmount = new JTextField(5);
     private JLabel labRests = new JLabel("Recovery time (m):");
     private JTextField rests = new JTextField(5);
+    /////////////////////////
 
     //CYCLE SPECIFIC LABEL DECLARATIONS
     private JLabel labTerrain = new JLabel("Terrain: ");
     private JTextField terrain = new JTextField();
     private JLabel labTempo = new JLabel("Tempo: ");
     private JTextField tempo = new JTextField();
+    //////////////////////////
 
     //SWIM SPECIFIC LABEL DECLARATIONS
     private JLabel labIndoorOutdoor = new JLabel("Location (Indoor/outdoor etc):");
     private JTextField IndoorOutdoor = new JTextField();
+    /////////////////////////
 
+    private JButton showAll = new JButton("Show all!");
     private JButton addR = new JButton("Add");
-    private JButton lookUpByDate = new JButton("Look Up");
-    private JButton findAllByDate = new JButton("Find all");
-    private JButton showAll = new JButton("Show me All entries on this date");
+    public static JButton lookUpByDate = new JButton("Look Up");
+    public static JButton findAllByDate = new JButton("Find all");
+    public static JButton removeEntry = new JButton("Remove");
     private JComboBox chooseEntry = new JComboBox();
     private JComboBox distanceMod = new JComboBox();
     private JTextArea outputArea = new JTextArea(5, 50);
@@ -72,7 +78,6 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
     
     public TrainingRecordGUI() {
 
-        JFrame frame = new JFrame("TRAININGGUI");
         setLayout(null);
         setSize(900 , 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -179,14 +184,18 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
          findAllByDate.setBounds(785 , 233 , 80 , 20);
          add(findAllByDate);
          findAllByDate.addActionListener(this);
-         add(showAll);
-         showAll.addActionListener(this);
+         
+         removeEntry.setBounds(210 , 235 , 80 , 20);
+         add(removeEntry);
+         removeEntry.addActionListener(this);
 
-        // add(labWarning);
-        // labWarning.setVisible(false);
-        // add(outputArea);
-        // showAll.setVisible(false);
+
          outputArea.setEditable(false);
+
+         //Initial Button Disabling
+         lookUpByDate.setEnabled(false);
+         findAllByDate.setEnabled(false);
+         removeEntry.setEnabled(false);
 
         // To save typing in new entries while testing, uncomment
         // the following lines (or add your own test cases)
@@ -207,10 +216,16 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
         if (event.getSource() == findAllByDate) {
             message = lookupAll();
         }  
+        if (event.getSource() == removeEntry) {
+
+            message = removeEntry();
+        } 
+
         if (event.getSource() == showAll) {
 
             message = showAll();
-        } 
+
+        }
 
         //this one is inneficcient but it works so who cares
         if (event.getSource() == chooseEntry) {
@@ -411,6 +426,34 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
         
         }
 
+    public String removeEntry()
+        {
+            try{
+            String fullDate = date.getText();
+            String[] splitDate = fullDate.split("/");
+            int d = Integer.parseInt(splitDate[0]);
+            int m = Integer.parseInt(splitDate[1]);
+            int y = Integer.parseInt(splitDate[2]);
+            String namer = name.getText();
+            }
+            catch(Exception e)
+            {
+            return null;
+            }
+
+            return null;
+
+        }
+
+        public void fillDisplay(Entry ent) {
+            name.setText(ent.getName());
+            date.setText(String.valueOf(ent.getDay() + "/" + ent.getMonth() + "/" + ent.getYear()));
+            hours.setText(String.valueOf(ent.getHour()));
+            mins.setText(String.valueOf(ent.getMin()));
+            secs.setText(String.valueOf(ent.getSec()));
+            dist.setText(String.valueOf(ent.getDistance()));
+        }
+
     /*
         Right. This verifies every field* in the program with either a try/catch or
         an if statement, it returns a boolean array, each element of the array represents
@@ -467,6 +510,12 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
 
 
                 }
+
+        }
+
+        public static void duplicateWarn(){
+
+            JOptionPane.showMessageDialog(null, "This entry already exists.");
 
         }
 
